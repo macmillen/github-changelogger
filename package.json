@@ -11,6 +11,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
     "@tsconfig/svelte": "^2.0.1",
+    "@types/marked": "^3.0.1",
     "autoprefixer": "^10.3.7",
     "cssnano": "^5.0.8",
     "mdsvex": "^0.9.8",
@@ -25,6 +26,8 @@
     "vite": "^2.6.4"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.3.4"
+    "@tailwindcss/forms": "^0.3.4",
+    "github-markdown-css": "^5.0.0",
+    "marked": "^3.0.7"
   }
 }
