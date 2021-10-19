@@ -11,6 +11,7 @@
     lastViewedSha?: string;
     latestSha?: string;
     content?: string;
+    packageName?: string;
   };
 
   const RAW_CONTENT_URL = "https://raw.githubusercontent.com";
@@ -29,13 +30,7 @@
   });
 
   onMount(async () => {
-    values = await Promise.all(
-      values.map(async (v) => ({
-        ...v,
-        latestSha: await getLatestSha(v.url),
-        content: await fetchChangelog(v.url),
-      }))
-    );
+    values = await Promise.all(values.map(updateDerivedValues));
     loading = false;
   });
 
@@ -44,12 +39,19 @@
       localStorage.setItem("values", JSON.stringify(values));
   }
 
+  const updateDerivedValues = async (entry: Entry) => ({
+    ...entry,
+    latestSha: await getLatestSha(entry.url),
+    content: await fetchChangelog(entry.url),
+    packageName: getPackageNameFromUrl(entry.url),
+  });
+
   const addNewUrl = () => (values = [...values, { url: "", id: Symbol() }]);
 
   const convertUrl = (url: string) =>
     url.replace(GITHUB_URL, RAW_CONTENT_URL).replace("/blob", "");
 
-  const getPackageNameFromUrl = (url: string) =>
+  const getRepoNameFromUrl = (url: string) =>
     url.split("/").slice(3, 5).join("/");
 
   const fetchChangelog = async (url: string) =>
@@ -58,9 +60,9 @@
   const getLatestSha = async (url: string) => {
     if (!url) return undefined;
     try {
-      const packageName = getPackageNameFromUrl(url);
+      const repoName = getRepoNameFromUrl(url);
       const filePath = getFilePathFromUrl(url);
-      const constructedUrl = `${GITHUB_API_URL}/repos/${packageName}/commits?path=${filePath}&per_page=1`;
+      const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits?path=${filePath}&per_page=1`;
       const jsonResult = await (await fetch(constructedUrl)).json();
       return jsonResult[0].sha as string;
     } catch {
@@ -73,6 +75,11 @@
     const index = url.indexOf(searchString);
     const pathWithBranchName = url.substring(index + searchString.length);
     return pathWithBranchName.split("/").slice(1).join("/");
+  };
+
+  const getPackageNameFromUrl = (url: string) => {
+    if (!url.includes("packages/")) return "";
+    return url.split("packages/")[1]?.split("/")[0];
   };
 </script>
 
@@ -90,25 +97,31 @@
     <AddChangelogButton on:click={addNewUrl} />
 
     <div class="flex flex-col gap-5">
-      {#each values as { id, url, lastViewedSha, latestSha, content }, i (id)}
+      {#each values as { id, url, lastViewedSha, latestSha, content, packageName }, i (id)}
         <div
           animate:flip={{ duration: 200 }}
           transition:fade={{ duration: 200 }}
           class="flex flex-col gap-3 border border-black p-2 even:bg-gray-900 odd:bg-gray-900 rounded-md"
         >
-          <h2 class="text-white text-lg">
-            {getPackageNameFromUrl(url)}
-          </h2>
+          <div class="flex items-center">
+            <h2 class="text-white text-lg">
+              {getRepoNameFromUrl(url)}
+            </h2>
+            {#if packageName}
+              <span
+                class="bg-blue-700 text-white border border-gray-400 px-1 rounded text-sm ml-2"
+                >{packageName}</span
+              >
+            {/if}
+          </div>
 
           <div class="flex gap-2">
             <input
               class="w-full text-xs"
               type="text"
               bind:value={values[i].url}
-              on:input={async () => {
-                values[i].latestSha = await getLatestSha(url);
-                values[i].content = await fetchChangelog(url);
-              }}
+              on:input={async () =>
+                (values[i] = await updateDerivedValues(values[i]))}
             />
             <button
               class="px-2 bg-red-600 text-white rounded-md"
