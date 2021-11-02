@@ -1,13 +1,14 @@
 <script lang="ts">
   import marked from "marked";
-  import type { Commit } from "src/types";
+  import type { Commit } from "../types";
 
   export let commit: Commit;
   export let selected: boolean;
 </script>
 
 <div
-  class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-2 py-1 cursor-pointer"
+  class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-2 py-1 cursor-pointer
+  {selected ? 'bg-purple-600/20' : ''}"
   on:click
 >
   <div class="flex justify-between">

@@ -1,8 +1,11 @@
 export type Entry = {
   url: string;
+  repoName?: string;
   id: symbol;
-  lastViewedSha?: string;
-  latestSha?: string;
+  lastViewedChangelogSha?: string;
+  latestChangelogSha?: string;
+  lastViewedCommitSha?: string;
+  latestCommitSha?: string;
   packageName?: string;
 };
 
@@ -27,3 +30,8 @@ export type Commit = {
   message: string;
   sha: string;
 };
+
+export type EntryInStorage = Pick<
+  Entry,
+  "lastViewedChangelogSha" | "lastViewedCommitSha" | "url"
+>;
