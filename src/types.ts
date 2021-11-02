@@ -1,11 +1,14 @@
+export enum ShaType {
+  Changelog = "Changelog",
+  Commit = "Commit",
+}
+
 export type Entry = {
   url: string;
   repoName?: string;
   id: symbol;
-  lastViewedChangelogSha?: string;
-  latestChangelogSha?: string;
-  lastViewedCommitSha?: string;
-  latestCommitSha?: string;
+  lastViewedShas: Partial<Record<ShaType, string>>;
+  latestShas: Partial<Record<ShaType, string>>;
   packageName?: string;
 };
 
@@ -31,7 +34,4 @@ export type Commit = {
   sha: string;
 };
 
-export type EntryInStorage = Pick<
-  Entry,
-  "lastViewedChangelogSha" | "lastViewedCommitSha" | "url"
->;
+export type EntryInStorage = Pick<Entry, "lastViewedShas" | "url">;

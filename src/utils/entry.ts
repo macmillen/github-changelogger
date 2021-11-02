@@ -2,10 +2,8 @@ import type { Entry, EntryInStorage } from "../types";
 
 export const getStorableEntryValues = ({
   url,
-  lastViewedChangelogSha,
-  lastViewedCommitSha,
+  lastViewedShas,
 }: Entry | EntryInStorage): EntryInStorage => ({
   url,
-  lastViewedChangelogSha,
-  lastViewedCommitSha,
+  lastViewedShas,
 });

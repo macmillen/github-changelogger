@@ -24,6 +24,7 @@
     values = parsedValue.map((entry) => ({
       ...getStorableEntryValues(entry),
       id: Symbol(),
+      latestShas: {},
     }));
   });
 
@@ -43,15 +44,21 @@
   const updateDerivedValues = async (entry: Entry): Promise<Entry> => {
     const data: Entry = {
       ...entry,
-      latestChangelogSha: await fetchLatestChangelogSha(entry.url),
-      latestCommitSha: await fetchLatestCommitSha(entry.url),
+      latestShas: {
+        Changelog: await fetchLatestChangelogSha(entry.url),
+        Commit: await fetchLatestCommitSha(entry.url),
+      },
       packageName: getPackageNameFromUrl(entry.url),
       repoName: getRepoNameFromUrl(entry.url),
     };
     return data;
   };
 
-  const addNewUrl = () => (values = [...values, { url: "", id: Symbol() }]);
+  const addNewUrl = () =>
+    (values = [
+      ...values,
+      { url: "", id: Symbol(), lastViewedShas: {}, latestShas: {} },
+    ]);
 </script>
 
 <!-- Open all links in new tab -->
@@ -62,7 +69,7 @@
   <AddChangelogButton on:click={addNewUrl} />
 
   <div class="flex flex-col gap-5">
-    {#each values as { id, url, lastViewedChangelogSha, latestChangelogSha, lastViewedCommitSha, latestCommitSha, packageName, repoName }, i (id)}
+    {#each values as { id, url, lastViewedShas, latestShas, packageName, repoName }, i (id)}
       <div
         animate:flip={{ duration: 200 }}
         transition:fade={{ duration: 200 }}
@@ -89,20 +96,13 @@
 
         {#if url}
           <ExpandableTabs
-            commitUpdates={lastViewedCommitSha !== latestCommitSha}
-            changelogUpdates={lastViewedChangelogSha !== latestChangelogSha}
+            {url}
+            {lastViewedShas}
+            {latestShas}
             onExpand={(type) => {
-              if (type === "changelog") {
-                const { lastViewedChangelogSha, latestChangelogSha } =
-                  values[i];
-                if (lastViewedChangelogSha !== latestChangelogSha) {
-                  values[i].lastViewedChangelogSha = latestChangelogSha;
-                }
-              } else if (type === "commits") {
-                const { lastViewedCommitSha, latestCommitSha } = values[i];
-                if (lastViewedCommitSha !== latestCommitSha) {
-                  values[i].lastViewedCommitSha = latestCommitSha;
-                }
+              const { lastViewedShas, latestShas } = values[i];
+              if (lastViewedShas[type] !== latestShas[type]) {
+                values[i].lastViewedShas[type] = latestShas[type];
               }
             }}
           >
