@@ -6,6 +6,7 @@
 
   export let onExpand: ((type: ExpansionType) => void) | undefined = undefined;
   export let changelogUpdates: boolean;
+  export let commitUpdates: boolean;
 
   let expanded: ExpansionType | null = null;
 
@@ -31,6 +32,9 @@
     selected={expanded === "commits"}
     on:click={() => onClick("commits")}
   >
+    {#if commitUpdates}
+      <UpdatesNotifier />
+    {/if}
     COMMITS
   </TabButton>
 </div>
