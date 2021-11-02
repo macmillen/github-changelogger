@@ -1,47 +1,47 @@
 <script lang="ts">
+  import type { MappedSet } from "../helpers/type";
+  import { Entry, ShaType } from "../types";
   import TabButton from "./tab-button.svelte";
   import UpdatesNotifier from "./updates-notifier.svelte";
 
-  type ExpansionType = "changelog" | "commits";
+  export let onExpand: ((type: ShaType) => void) | undefined = undefined;
+  export let lastViewedShas: Entry["lastViewedShas"];
+  export let latestShas: Entry["latestShas"];
+  export let url: string;
 
-  export let onExpand: ((type: ExpansionType) => void) | undefined = undefined;
-  export let changelogUpdates: boolean;
-  export let commitUpdates: boolean;
+  let expanded: ShaType | null = null;
 
-  let expanded: ExpansionType | null = null;
-
-  const onClick = (type: ExpansionType) => {
+  const onClick = (type: ShaType) => {
     if (expanded !== type) {
       expanded = type;
       onExpand?.(type);
     } else expanded = null;
   };
+
+  const typeMap: MappedSet<ShaType> = {
+    Changelog: "CHANGELOG",
+    Commit: "COMMITS",
+  };
 </script>
 
 <div class="flex gap-1">
-  <TabButton
-    selected={expanded === "changelog"}
-    on:click={() => onClick("changelog")}
-  >
-    {#if changelogUpdates}
-      <UpdatesNotifier />
-    {/if}
-    CHANGELOG
-  </TabButton>
-  <TabButton
-    selected={expanded === "commits"}
-    on:click={() => onClick("commits")}
-  >
-    {#if commitUpdates}
-      <UpdatesNotifier />
-    {/if}
-    COMMITS
-  </TabButton>
+  {#each [ShaType.Changelog, ShaType.Commit] as type}
+    <TabButton
+      selected={expanded === type}
+      on:click={() => onClick(type)}
+      disabled={type === ShaType.Changelog && !url.includes("CHANGELOG.md")}
+    >
+      {#if lastViewedShas[type] !== latestShas[type]}
+        <UpdatesNotifier />
+      {/if}
+      {typeMap[type]}
+    </TabButton>
+  {/each}
 </div>
 <div>
-  {#if expanded === "changelog"}
+  {#if expanded === ShaType.Changelog}
     <slot name="changelog" />
-  {:else if expanded === "commits"}
+  {:else if expanded === ShaType.Commit}
     <slot name="commits" />
   {/if}
 </div>
