@@ -3,18 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
-details > summary {
-  list-style-type: none;
+ins {
+  @apply bg-green-600/30 no-underline;
 }
 
-details > summary::-webkit-details-marker {
-  display: none;
+del {
+  @apply bg-red-600/30 no-underline;
 }
 
-details > summary::before {
-  content: "🐙 ";
-}
-
-details[open] > summary::before {
-  content: "🐢 ";
+pre {
+  @apply flex flex-col;
 }

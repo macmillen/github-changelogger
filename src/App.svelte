@@ -4,15 +4,12 @@
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
   import AddChangelogButton from "./lib/add-changelog-button.svelte";
-
-  type Entry = {
-    url: string;
-    id: symbol;
-    lastViewedSha?: string;
-    latestSha?: string;
-    content?: string;
-    packageName?: string;
-  };
+  import CommitItem from "./lib/commit-item.svelte";
+  import Error from "./lib/error.svelte";
+  import ExpandableTabs from "./lib/expandable-tabs.svelte";
+  import IconDelete from "./lib/icon-delete.svelte";
+  import Loader from "./lib/loader.svelte";
+  import type { Commit, CommitData, Entry } from "./types";
 
   const RAW_CONTENT_URL = "https://raw.githubusercontent.com";
   const GITHUB_URL = "https://github.com";
@@ -21,6 +18,7 @@
   let values: Entry[] = [];
   let loading = true;
   let showEverything = false;
+  let selectedCommitSha: string | null = null;
 
   onMount(() => {
     const storageValue = localStorage.getItem("values");
@@ -42,7 +40,6 @@
   const updateDerivedValues = async (entry: Entry) => ({
     ...entry,
     latestSha: await getLatestSha(entry.url),
-    content: await fetchChangelog(entry.url),
     packageName: getPackageNameFromUrl(entry.url),
   });
 
@@ -56,6 +53,48 @@
 
   const fetchChangelog = async (url: string) =>
     await (await fetch(convertUrl(url))).text();
+
+  const fetchCommits = async (url: string): Promise<Commit[]> => {
+    const repoName = getRepoNameFromUrl(url);
+    const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits?per_page=10`;
+    const jsonResult = (await (
+      await fetch(constructedUrl)
+    ).json()) as CommitData[];
+
+    const data = jsonResult.map((c) => ({
+      author: c.author.login,
+      date: getTimeAgo(new Date(c.commit.author.date)),
+      message: c.commit.message,
+      sha: c.sha,
+      avatarUrl: c.author.avatar_url,
+    }));
+
+    return data;
+  };
+
+  const getTimeAgo = (date: Date): string => {
+    const dateDiff = Date.now() - +date;
+    const diffMinutes = Math.ceil(dateDiff / (1000 * 60));
+    const diffHours = Math.ceil(diffMinutes / 60);
+    const diffDays = Math.ceil(diffHours / 24);
+
+    if (diffMinutes < 60) return `${diffMinutes} m`;
+    else if (diffHours < 24) return `${diffHours} h`;
+    else return `${diffDays} d`;
+  };
+
+  const fetchDiff = async (url: string, sha: string): Promise<string> => {
+    const repoName = getRepoNameFromUrl(url);
+    const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits/${sha}`;
+    const textResult = await (
+      await fetch(constructedUrl, {
+        headers: {
+          Accept: "application/vnd.github.v3.diff",
+        },
+      })
+    ).text();
+    return textResult;
+  };
 
   const getLatestSha = async (url: string) => {
     if (!url) return undefined;
@@ -81,6 +120,63 @@
     if (!url.includes("packages/")) return "";
     return url.split("packages/")[1]?.split("/")[0];
   };
+
+  const gitDiffToHtml = (s: string): { html: string; modification: number } => {
+    switch (s[0]) {
+      case "+":
+        return { html: `<ins>${s}</ins>`, modification: 1 };
+      case "-":
+        return { html: `<del>${s}</del>`, modification: -1 };
+      default:
+        return { html: s, modification: 0 };
+    }
+  };
+
+  const getDiffDataFromRawTextFile = (
+    rawText: string
+  ): {
+    files: { html: string; filePath: string }[];
+    ins: number;
+    del: number;
+    filesChanged: number;
+  } => {
+    const files = rawText
+      .split("diff --git ")
+      .slice(1)
+      .map((s) => {
+        const [filePath, _1, _2, _3, _4, ...otherLines] = s.split("\n");
+        const { html, ins, del } = otherLines.reduce(
+          (acc, l) => {
+            const sanatizedText = l
+              .replaceAll("<", "&#60;")
+              .replaceAll(">", "&#62;");
+            const { html, modification } = gitDiffToHtml(sanatizedText);
+            const ins = acc.ins + Number(modification === 1);
+            const del = acc.del + Number(modification === -1);
+            return {
+              html: `${acc.html}\n${html}`,
+              ins,
+              del,
+            };
+          },
+          { html: "", ins: 0, del: 0 }
+        );
+        return {
+          html,
+          filePath: filePath.split(" ")[0].split("/").slice(1).join("/"),
+          del,
+          ins,
+        };
+      });
+    return {
+      ...files.reduce(
+        (acc, { del, ins }) => ({ del: acc.del + del, ins: acc.ins + ins }),
+        { ins: 0, del: 0 }
+      ),
+      filesChanged: files.length,
+      files,
+    };
+  };
 </script>
 
 <!-- Open all links in new tab -->
@@ -97,7 +193,7 @@
     <AddChangelogButton on:click={addNewUrl} />
 
     <div class="flex flex-col gap-5">
-      {#each values as { id, url, lastViewedSha, latestSha, content, packageName }, i (id)}
+      {#each values as { id, url, lastViewedSha, latestSha, packageName }, i (id)}
         <div
           animate:flip={{ duration: 200 }}
           transition:fade={{ duration: 200 }}
@@ -117,55 +213,102 @@
 
           <div class="flex gap-2">
             <input
-              class="w-full text-xs"
+              class="w-full text-xs bg-gray-800 hover:bg-gray-700 transition text-white rounded-md border-none"
               type="text"
               bind:value={values[i].url}
               on:input={async () =>
                 (values[i] = await updateDerivedValues(values[i]))}
             />
             <button
-              class="px-2 bg-red-600 text-white rounded-md"
+              class="px-2 bg-red-600 hover:bg-red-800 transition ring-4 ring-red-900/50 text-white rounded-md"
               on:click={() =>
                 (values = values.filter((_, index) => index !== i))}
-              >Remove</button
             >
+              <IconDelete />
+            </button>
           </div>
 
           {#if url}
-            <details
-              on:toggle={(e) => {
-                const opened = e.target?.open;
+            <ExpandableTabs
+              changelogUpdates={lastViewedSha !== latestSha}
+              onExpand={() => {
                 const { lastViewedSha, latestSha } = values[i];
-                if (opened && lastViewedSha !== latestSha)
+                if (lastViewedSha !== latestSha)
                   values[i].lastViewedSha = latestSha;
               }}
-              class="bg-black text-white rounded-md text-lg"
             >
-              <summary class="py-2 pl-3 cursor-pointer">
-                Changelog
-                {#if lastViewedSha !== latestSha}
-                  <span class="bg-blue-800 rounded-md px-2 py-1 ml-2 text-sm">
-                    New Updates! 🦭
-                  </span>
-                {/if}
-              </summary>
+              <div slot="commits">
+                {#await fetchCommits(url)}
+                  <Loader />
+                {:then commits}
+                  <div class="flex flex-col divide-y divide-gray-600">
+                    {#each commits as commit}
+                      <CommitItem
+                        {commit}
+                        selected={commit.sha === selectedCommitSha}
+                        on:click={() => {
+                          if (selectedCommitSha === commit.sha)
+                            selectedCommitSha = null;
+                          else selectedCommitSha = commit.sha;
+                        }}
+                      />
+                      {#if commit.sha === selectedCommitSha}
+                        {#await fetchDiff(url, commit.sha)}
+                          <Loader />
+                        {:then text}
+                          <p class="text-gray-100">
+                            {getDiffDataFromRawTextFile(text).filesChanged} files
+                            changed
+                          </p>
+                          <div class="flex gap-2">
+                            <span class="text-green-600"
+                              >{getDiffDataFromRawTextFile(text).ins} additions</span
+                            >
+                            <span class="text-red-600"
+                              >{getDiffDataFromRawTextFile(text).del} deletions</span
+                            >
+                          </div>
+                          {#each getDiffDataFromRawTextFile(text).files as { filePath, html }}
+                            <p class="text-gray-100">
+                              {filePath}
+                            </p>
+                            <div class="markdown-body">
+                              {@html `<pre class="!px-0">${html}</pre>`}
+                            </div>
+                          {/each}
+                        {:catch error}
+                          <Error {error} />
+                        {/await}
+                      {/if}
+                    {/each}
+                  </div>
+                {:catch error}
+                  <Error {error} />
+                {/await}
+              </div>
 
-              {#if content}
-                <article class="markdown-body p-2">
-                  {@html marked(
-                    showEverything ? content : content.slice(0, 4000)
-                  )}
-                </article>
-                {#if !showEverything}
-                  <button
-                    class="bg-gray-900 text-white rounded-md px-4 py-2 m-2"
-                    on:click={() => (showEverything = true)}
-                  >
-                    Show everything
-                  </button>
-                {/if}
-              {/if}
-            </details>
+              <div slot="changelog">
+                {#await fetchChangelog(url)}
+                  <Loader />
+                {:then content}
+                  <div class="markdown-body p-2">
+                    {@html marked(
+                      showEverything ? content : content.slice(0, 4000)
+                    )}
+                  </div>
+                  {#if !showEverything}
+                    <button
+                      class="bg-gray-900 text-white rounded-md px-4 py-2 m-2"
+                      on:click={() => (showEverything = true)}
+                    >
+                      Show everything
+                    </button>
+                  {/if}
+                {:catch error}
+                  <Error {error} />
+                {/await}
+              </div>
+            </ExpandableTabs>
           {/if}
         </div>
       {/each}
