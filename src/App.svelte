@@ -87,7 +87,10 @@
             bind:value={values[i].url}
           />
           <DeleteButton
-            on:click={() => (values = values.filter((_, index) => index !== i))}
+            on:click={() => {
+              if (confirm("Are you sure you want to delete this repo?"))
+                values = values.filter((_, index) => index !== i);
+            }}
           />
         </div>
 
