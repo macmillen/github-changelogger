@@ -9,26 +9,26 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
-    "@tsconfig/svelte": "^2.0.1",
-    "@types/marked": "^3.0.1",
-    "autoprefixer": "^10.3.7",
-    "cssnano": "^5.0.8",
-    "mdsvex": "^0.9.8",
-    "postcss": "^8.3.9",
-    "postcss-load-config": "^3.1.0",
-    "svelte": "^3.37.0",
-    "svelte-check": "^2.1.0",
-    "svelte-preprocess": "^4.9.8",
-    "tailwindcss": "^2.2.16",
-    "tslib": "^2.2.0",
-    "typescript": "^4.3.2",
-    "vite": "^2.6.4"
+    "@sveltejs/vite-plugin-svelte": "1.0.0-next.32",
+    "@tsconfig/svelte": "3.0.0",
+    "@types/marked": "4.0.1",
+    "autoprefixer": "10.4.0",
+    "cssnano": "5.0.14",
+    "mdsvex": "0.9.8",
+    "postcss": "8.4.5",
+    "postcss-load-config": "3.1.0",
+    "svelte": "3.44.3",
+    "svelte-check": "2.2.11",
+    "svelte-preprocess": "4.10.1",
+    "tailwindcss": "3.0.7",
+    "tslib": "2.2.0",
+    "typescript": "4.5.4",
+    "vite": "2.7.7"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.3.4",
+    "@tailwindcss/forms": "0.4.0",
     "diff2html": "3.4.13",
-    "github-markdown-css": "^5.0.0",
-    "marked": "^3.0.7"
+    "github-markdown-css": "5.1.0",
+    "marked": "4.0.8"
   }
 }
