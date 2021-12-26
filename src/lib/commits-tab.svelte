@@ -13,7 +13,7 @@
 {#await fetchCommits(url)}
   <Loader />
 {:then commits}
-  <div class="flex flex-col divide-y divide-gray-600">
+  <div class="flex flex-col">
     {#each commits as commit}
       <CommitItem
         {commit}
