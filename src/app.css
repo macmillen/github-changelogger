@@ -2,3 +2,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  @apply w-5 h-5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-700 rounded-2xl bg-clip-content border-4 border-transparent;
+  border: 6px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply transition-all bg-gray-600;
+}
