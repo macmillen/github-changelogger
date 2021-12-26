@@ -1,3 +1,4 @@
+import "diff2html/bundles/css/diff2html.min.css";
 import "github-markdown-css";
 import "./app.css";
 import App from "./App.svelte";

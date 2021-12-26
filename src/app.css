@@ -3,14 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-ins {
-  @apply bg-green-600/30 no-underline;
+.d2h-code-linenumber {
+  @apply hidden;
 }
 
-del {
-  @apply bg-red-600/30 no-underline;
-}
-
-pre {
-  @apply flex flex-col;
+.d2h-code-line {
+  @apply pl-0;
 }
