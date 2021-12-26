@@ -2,11 +2,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.d2h-code-linenumber {
-  @apply hidden;
-}
-
-.d2h-code-line {
-  @apply pl-0;
-}
