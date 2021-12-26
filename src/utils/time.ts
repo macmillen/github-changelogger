@@ -6,5 +6,5 @@ export const getTimeAgo = (date: Date): string => {
 
   if (diffMinutes < 60) return `${diffMinutes} m`;
   else if (diffHours < 24) return `${diffHours} h`;
-  else return `${diffDays} d`;
+  return `${diffDays} d`;
 };
