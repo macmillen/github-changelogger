@@ -74,7 +74,7 @@
       >
         <div class="flex items-center">
           <h2 class="text-white text-lg">
-            {repoName}
+            {repoName ?? "New Repo"}
           </h2>
           <PackageName {packageName} />
           <div class="flex-grow" />
