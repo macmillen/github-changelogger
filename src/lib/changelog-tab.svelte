@@ -9,6 +9,9 @@
   let showEverything = false;
 </script>
 
+<!-- Open all links in new tab -->
+<base target="_blank" />
+
 {#await fetchChangelog(url)}
   <Loader />
 {:then content}

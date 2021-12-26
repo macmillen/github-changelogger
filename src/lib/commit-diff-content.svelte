@@ -4,6 +4,6 @@
   export let text: string;
 </script>
 
-<div class="bg-white">
+<div class="diff-container">
   {@html diffHtml(text)}
 </div>

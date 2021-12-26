@@ -61,9 +61,6 @@
     ]);
 </script>
 
-<!-- Open all links in new tab -->
-<base target="_blank" />
-
 <TitleBar />
 <div class="m-3 flex flex-col gap-3">
   <AddChangelogButton on:click={addNewUrl} />
