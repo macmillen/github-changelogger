@@ -3,7 +3,7 @@
 </script>
 
 <input
-  class="w-full text-xs bg-gray-800 hover:bg-gray-700 transition text-white rounded-md border-none"
+  class="w-full text-xs hover:bg-gray-600 transition text-white rounded-md border-gray-700 bg-transparent"
   placeholder="Add Github Repo URL or Changelog File URL"
   type="text"
   bind:value

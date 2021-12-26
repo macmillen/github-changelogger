@@ -21,8 +21,8 @@
   };
 
   const typeMap: MappedSet<ShaType, { icon: string; title: string }> = {
-    Changelog: { icon: "mdi:source-repository", title: "CHANGELOG" },
-    Commit: { icon: "mdi:git", title: "COMMITS" },
+    Changelog: { icon: "mdi:source-repository", title: "Changelog" },
+    Commit: { icon: "mdi:git", title: "Commits" },
   };
 </script>
 
@@ -39,10 +39,13 @@
     {/if}
   {/each}
 </div>
-<div>
-  {#if expanded === ShaType.Changelog}
-    <slot name="changelog" />
-  {:else if expanded === ShaType.Commit}
-    <slot name="commits" />
-  {/if}
-</div>
+
+{#if expanded}
+  <div>
+    {#if expanded === ShaType.Changelog}
+      <slot name="changelog" />
+    {:else if expanded === ShaType.Commit}
+      <slot name="commits" />
+    {/if}
+  </div>
+{/if}

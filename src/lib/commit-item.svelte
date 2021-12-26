@@ -7,7 +7,7 @@
 </script>
 
 <div
-  class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-2 py-1 cursor-pointer
+  class="bg-gray-800 hover:bg-gray-700 text-gray-100 px-2 py-1 cursor-pointer rounded-md
   {selected ? 'bg-purple-600/20' : ''}"
   on:click
 >
