@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@iconify/svelte";
   import type { MappedSet } from "../helpers/type";
   import type { Entry } from "../types";
   import { ShaType } from "../types";
@@ -19,24 +20,23 @@
     } else expanded = null;
   };
 
-  const typeMap: MappedSet<ShaType> = {
-    Changelog: "CHANGELOG",
-    Commit: "COMMITS",
+  const typeMap: MappedSet<ShaType, { icon: string; title: string }> = {
+    Changelog: { icon: "mdi:source-repository", title: "CHANGELOG" },
+    Commit: { icon: "mdi:git", title: "COMMITS" },
   };
 </script>
 
 <div class="flex gap-1">
   {#each [ShaType.Changelog, ShaType.Commit] as type}
-    <TabButton
-      selected={expanded === type}
-      on:click={() => onClick(type)}
-      disabled={type === ShaType.Changelog && !url.includes("CHANGELOG.md")}
-    >
-      {#if lastViewedShas[type] !== latestShas[type]}
-        <UpdatesNotifier />
-      {/if}
-      {typeMap[type]}
-    </TabButton>
+    {#if !(type === ShaType.Changelog && !url.includes("CHANGELOG.md"))}
+      <TabButton selected={expanded === type} on:click={() => onClick(type)}>
+        {#if lastViewedShas[type] !== latestShas[type]}
+          <UpdatesNotifier />
+        {/if}
+        <Icon icon={typeMap[type].icon} class="w-4 h-4" />
+        {typeMap[type].title}
+      </TabButton>
+    {/if}
   {/each}
 </div>
 <div>
