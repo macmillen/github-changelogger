@@ -1,5 +1,5 @@
 <script lang="ts">
-  import marked from "marked";
+  import { marked } from "marked";
   import type { Commit } from "../types";
 
   export let commit: Commit;
@@ -14,7 +14,7 @@
   <div class="flex justify-between">
     {#if selected}
       <div>
-        {@html marked(commit.message)}
+        {@html marked.parse(commit.message)}
       </div>
     {:else}
       <p class="whitespace-nowrap overflow-ellipsis overflow-hidden">
