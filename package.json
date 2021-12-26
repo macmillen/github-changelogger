@@ -14,7 +14,6 @@
     "@types/marked": "4.0.1",
     "autoprefixer": "10.4.0",
     "cssnano": "5.0.14",
-    "mdsvex": "0.9.8",
     "postcss": "8.4.5",
     "postcss-load-config": "3.1.0",
     "svelte": "3.44.3",
