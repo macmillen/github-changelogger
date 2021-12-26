@@ -77,6 +77,13 @@
             {repoName}
           </h2>
           <PackageName {packageName} />
+          <div class="flex-grow" />
+          <DeleteButton
+            on:click={() => {
+              if (confirm("Are you sure you want to delete this repo?"))
+                values = values.filter((_, index) => index !== i);
+            }}
+          />
         </div>
 
         <div class="flex gap-2">
@@ -85,12 +92,6 @@
               values[i] = await updateDerivedValues(values[i]);
             }}
             bind:value={values[i].url}
-          />
-          <DeleteButton
-            on:click={() => {
-              if (confirm("Are you sure you want to delete this repo?"))
-                values = values.filter((_, index) => index !== i);
-            }}
           />
         </div>
 
