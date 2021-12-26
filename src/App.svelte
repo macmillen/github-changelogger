@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
   import AddChangelogButton from "./lib/add-changelog-button.svelte";
@@ -54,6 +54,10 @@
     return data;
   };
 
+  const gotoBottom = () => {
+    window.scrollTo(0, document.body.scrollHeight), 200;
+  };
+
   const addNewUrl = () =>
     (values = [
       ...values,
@@ -63,7 +67,13 @@
 
 <TitleBar />
 <div class="m-3 flex flex-col gap-3">
-  <AddChangelogButton on:click={addNewUrl} />
+  <AddChangelogButton
+    on:click={async () => {
+      addNewUrl();
+      await tick();
+      gotoBottom();
+    }}
+  />
 
   <div class="flex flex-col gap-5">
     {#each values as { id, url, lastViewedShas, latestShas, packageName, repoName }, i (id)}
@@ -74,7 +84,7 @@
       >
         <div class="flex items-center">
           <h2 class="text-white text-lg">
-            {repoName ?? "New Repo"}
+            {repoName || "[New Repo]"}
           </h2>
           <PackageName {packageName} />
           <div class="flex-grow" />

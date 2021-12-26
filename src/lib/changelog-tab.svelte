@@ -1,5 +1,5 @@
 <script lang="ts">
-  import marked from "marked";
+  import { marked } from "marked";
   import { fetchChangelog } from "../utils/fetch";
   import Error from "./error.svelte";
   import Loader from "./loader.svelte";
@@ -16,7 +16,7 @@
   <Loader />
 {:then content}
   <div class="markdown-body p-2">
-    {@html marked(showEverything ? content : content.slice(0, 4000))}
+    {@html marked.parse(showEverything ? content : content.slice(0, 4000))}
   </div>
   {#if !showEverything}
     <button
