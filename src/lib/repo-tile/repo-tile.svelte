@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class="p-2 flex flex-col gap-3 border border-black rounded-md"
+  class="p-2 flex flex-col gap-3 border border-black bg-black/80 rounded-md"
   in:scale={{ delay: 200 }}
 >
   <RepoTileHeader {packageName} {repo} {onDelete} />

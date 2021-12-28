@@ -22,7 +22,7 @@
 </script>
 
 <div
-  class="bg-gray-900 hover:bg-black text-gray-100 cursor-pointer rounded-md p-1 space-y-1 transition"
+  class="bg-gray-900 hover:ring text-gray-100 cursor-pointer rounded-md p-1 space-y-1"
   on:click
 >
   <div class="flex justify-between mx-1">
