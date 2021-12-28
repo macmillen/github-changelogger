@@ -5,7 +5,8 @@ export enum ShaType {
 
 export type Entry = {
   url: string;
-  repoName?: string;
+  repo?: string;
+  owner?: string;
   id: symbol;
   lastViewedShas: Partial<Record<ShaType, string>>;
   latestShas: Partial<Record<ShaType, string>>;

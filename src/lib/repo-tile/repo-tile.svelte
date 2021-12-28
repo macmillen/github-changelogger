@@ -10,14 +10,14 @@
   export let entry: Entry;
   export let onExpand: ((type: ShaType) => void) | undefined;
 
-  $: ({ packageName, repoName, lastViewedShas, latestShas, url } = entry);
+  $: ({ packageName, repo, lastViewedShas, latestShas, url } = entry);
 </script>
 
 <div
   class="p-2 flex flex-col gap-3 border border-black rounded-md"
   in:scale={{ delay: 200 }}
 >
-  <RepoTileHeader {packageName} {repoName} {onDelete} />
+  <RepoTileHeader {packageName} {repo} {onDelete} />
 
   <slot />
 

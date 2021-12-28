@@ -9,7 +9,7 @@
   import type { Entry, EntryInStorage } from "./types";
   import { getStorableEntryValues } from "./utils/entry";
   import { fetchLatestChangelogSha, fetchLatestCommitSha } from "./utils/fetch";
-  import { getPackageNameFromUrl, getRepoNameFromUrl } from "./utils/url";
+  import { getOwnerAndRepoFromUrl, getPackageNameFromUrl } from "./utils/url";
 
   let values: Entry[] = [];
 
@@ -38,6 +38,8 @@
   }
 
   const updateDerivedValues = async (entry: Entry): Promise<Entry> => {
+    const [owner, repo] = getOwnerAndRepoFromUrl(entry.url);
+
     const data: Entry = {
       ...entry,
       latestShas: {
@@ -45,7 +47,8 @@
         Commit: await fetchLatestCommitSha(entry.url),
       },
       packageName: getPackageNameFromUrl(entry.url),
-      repoName: getRepoNameFromUrl(entry.url),
+      repo,
+      owner,
     };
     return data;
   };
