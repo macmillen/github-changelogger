@@ -13,9 +13,10 @@
 {#await fetchCommits(url)}
   <Loader />
 {:then commits}
-  <div class="flex flex-col">
+  <div class="flex flex-col gap-2.5">
     {#each commits as commit}
       <CommitItem
+        {url}
         {commit}
         selected={commit.sha === selectedCommitSha}
         on:click={() => {

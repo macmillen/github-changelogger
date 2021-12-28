@@ -4,12 +4,12 @@ import { getTimeAgo } from "./time";
 import {
   convertUrlToRawUrl,
   getFilePathFromUrl,
-  getRepoNameFromUrl,
+  getOwnerAndRepoFromUrl,
 } from "./url";
 
 export const fetchDiff = async (url: string, sha: string): Promise<string> => {
-  const repoName = getRepoNameFromUrl(url);
-  const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits/${sha}`;
+  const [owner, repo] = getOwnerAndRepoFromUrl(url);
+  const constructedUrl = `${GITHUB_API_URL}/repos/${owner}/${repo}/commits/${sha}`;
   const response = await fetch(constructedUrl, {
     headers: {
       Accept: "application/vnd.github.v3.diff",
@@ -25,8 +25,8 @@ export const fetchChangelog = async (url: string): Promise<string> => {
 };
 
 export const fetchCommits = async (url: string): Promise<Commit[]> => {
-  const repoName = getRepoNameFromUrl(url);
-  const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits?per_page=10`;
+  const [owner, repo] = getOwnerAndRepoFromUrl(url);
+  const constructedUrl = `${GITHUB_API_URL}/repos/${owner}/${repo}/commits?per_page=10`;
   const response = await fetch(constructedUrl);
   const json = (await response.json()) as CommitData[];
 
@@ -44,9 +44,9 @@ export const fetchLatestChangelogSha = async (
 ): Promise<string | undefined> => {
   if (!url) return undefined;
   try {
-    const repoName = getRepoNameFromUrl(url);
+    const [owner, repo] = getOwnerAndRepoFromUrl(url);
     const filePath = getFilePathFromUrl(url);
-    const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits?path=${filePath}&per_page=1`;
+    const constructedUrl = `${GITHUB_API_URL}/repos/${owner}/${repo}/commits?path=${filePath}&per_page=1`;
     const response = await fetch(constructedUrl);
     const json = await response.json();
     const sha = json[0]?.sha;
@@ -61,8 +61,8 @@ export const fetchLatestCommitSha = async (
 ): Promise<string | undefined> => {
   if (!url) return undefined;
   try {
-    const repoName = getRepoNameFromUrl(url);
-    const constructedUrl = `${GITHUB_API_URL}/repos/${repoName}/commits?per_page=1`;
+    const [owner, repo] = getOwnerAndRepoFromUrl(url);
+    const constructedUrl = `${GITHUB_API_URL}/repos/${owner}/${repo}/commits?per_page=1`;
     const response = await fetch(constructedUrl);
     const json = (await response.json()) as CommitData[];
 

@@ -3,13 +3,13 @@
   import PackageName from "./package-name.svelte";
 
   export let packageName: string | undefined;
-  export let repoName: string | undefined;
+  export let repo: string | undefined;
   export let onDelete: () => void;
 </script>
 
 <div class="flex items-center">
   <h2 class="text-white text-lg">
-    {repoName || "[New Repo]"}
+    {repo || "[New Repo]"}
   </h2>
   <PackageName {packageName} />
   <div class="flex-grow" />
