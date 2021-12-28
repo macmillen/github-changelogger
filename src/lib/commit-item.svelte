@@ -22,8 +22,7 @@
 </script>
 
 <div
-  class="bg-gray-900 hover:bg-black text-gray-100 cursor-pointer rounded-md p-1 space-y-1 transition
-  {selected ? 'bg-purple-600/20' : ''}"
+  class="bg-gray-900 hover:bg-black text-gray-100 cursor-pointer rounded-md p-1 space-y-1 transition"
   on:click
 >
   <div class="flex justify-between mx-1">
