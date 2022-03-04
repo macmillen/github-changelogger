@@ -22,7 +22,8 @@
 </script>
 
 <div
-  class="bg-gray-900 hover:ring text-gray-100 cursor-pointer rounded-md p-1 space-y-1"
+  class="bg-gray-900 text-gray-100 cursor-pointer rounded-md p-1 space-y-1
+    {selected ? 'ring' : ''}"
   on:click
 >
   <div class="flex justify-between mx-1">

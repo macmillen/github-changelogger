@@ -21,7 +21,7 @@
   };
 
   const typeMap: MappedSet<ShaType, { icon: string; title: string }> = {
-    Changelog: { icon: "mdi:source-repository", title: "Changelog" },
+    Changelog: { icon: "mdi:math-log", title: "Changelog" },
     Commit: { icon: "mdi:git", title: "Commits" },
   };
 </script>

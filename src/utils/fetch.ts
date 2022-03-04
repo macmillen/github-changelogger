@@ -26,7 +26,7 @@ export const fetchChangelog = async (url: string): Promise<string> => {
 
 export const fetchCommits = async (url: string): Promise<Commit[]> => {
   const [owner, repo] = getOwnerAndRepoFromUrl(url);
-  const constructedUrl = `${GITHUB_API_URL}/repos/${owner}/${repo}/commits?per_page=10`;
+  const constructedUrl = `${GITHUB_API_URL}/repos/${owner}/${repo}/commits?per_page=20`;
   const response = await fetch(constructedUrl);
   const json = (await response.json()) as CommitData[];
 
