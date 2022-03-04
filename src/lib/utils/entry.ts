@@ -1,4 +1,4 @@
-import type { Entry, EntryInStorage } from "../types";
+import type { Entry, EntryInStorage } from "$lib/types/types";
 
 export const getStorableEntryValues = ({
   url,

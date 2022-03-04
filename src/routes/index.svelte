@@ -1,15 +1,15 @@
 <script lang="ts">
-  import AddChangelogButton from "$lib/add-changelog-button.svelte";
-  import ChangelogInput from "$lib/changelog-input.svelte";
-  import RepoTile from "$lib/repo-tile/repo-tile.svelte";
-  import TitleBar from "$lib/title-bar.svelte";
+  import AddChangelogButton from "$lib/components/add-changelog-button.svelte";
+  import ChangelogInput from "$lib/components/changelog-input.svelte";
+  import RepoTile from "$lib/components/repo-tile/repo-tile.svelte";
+  import TitleBar from "$lib/components/title-bar.svelte";
+  import type { Entry, EntryInStorage } from "$lib/types/types";
+  import { getStorableEntryValues } from "$lib/utils/entry";
+  import { fetchLatestChangelogSha, fetchLatestCommitSha } from "$lib/utils/fetch";
+  import { getOwnerAndRepoFromUrl, getPackageNameFromUrl } from "$lib/utils/url";
   import { onMount, tick } from "svelte";
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import type { Entry, EntryInStorage } from "../types";
-  import { getStorableEntryValues } from "../utils/entry";
-  import { fetchLatestChangelogSha, fetchLatestCommitSha } from "../utils/fetch";
-  import { getOwnerAndRepoFromUrl, getPackageNameFromUrl } from "../utils/url";
 
   let values: Entry[] = [];
 
