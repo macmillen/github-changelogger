@@ -1,8 +1,6 @@
 import { GITHUB_URL, RAW_CONTENT_URL } from "../constants/github";
 
-export const getOwnerAndRepoFromUrl = (
-  url: string
-): [owner: string, repo: string] =>
+export const getOwnerAndRepoFromUrl = (url: string): [owner: string, repo: string] =>
   url.split("/").slice(3, 5) as [owner: string, repo: string];
 
 export const convertUrlToRawUrl = (url: string) =>

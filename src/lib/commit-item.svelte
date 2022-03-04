@@ -7,13 +7,12 @@
   export let url: string;
   export let selected: boolean;
 
-  const getMdUrl = (pr: number) =>
-    `[#${pr}](${getPullRequestUrlFromUrl(url, pr)})`;
+  const getMdUrl = (pr: number) => `[#${pr}](${getPullRequestUrlFromUrl(url, pr)})`;
 
   const replacePrHashesWithLinks = (message: string) =>
     message.replaceAll(/#[0-9]+/g, (pr) => getMdUrl(+pr.substring(1)));
 
-  const changeTarget = (node: HTMLDivElement): SvelteActionReturnType => {
+  const changeTarget = (node: HTMLDivElement) => {
     node.querySelectorAll("a").forEach((a) => {
       a.target = "_blank";
       a.addEventListener("click", (e) => e.stopPropagation());

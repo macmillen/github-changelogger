@@ -1,11 +1,7 @@
 import { GITHUB_API_URL } from "../constants/github";
 import type { Commit, CommitData } from "../types";
 import { getTimeAgo } from "./time";
-import {
-  convertUrlToRawUrl,
-  getFilePathFromUrl,
-  getOwnerAndRepoFromUrl,
-} from "./url";
+import { convertUrlToRawUrl, getFilePathFromUrl, getOwnerAndRepoFromUrl } from "./url";
 
 export const fetchDiff = async (url: string, sha: string): Promise<string> => {
   const [owner, repo] = getOwnerAndRepoFromUrl(url);
@@ -39,9 +35,7 @@ export const fetchCommits = async (url: string): Promise<Commit[]> => {
   }));
 };
 
-export const fetchLatestChangelogSha = async (
-  url: string
-): Promise<string | undefined> => {
+export const fetchLatestChangelogSha = async (url: string): Promise<string | undefined> => {
   if (!url) return undefined;
   try {
     const [owner, repo] = getOwnerAndRepoFromUrl(url);
@@ -56,9 +50,7 @@ export const fetchLatestChangelogSha = async (
   }
 };
 
-export const fetchLatestCommitSha = async (
-  url: string
-): Promise<string | undefined> => {
+export const fetchLatestCommitSha = async (url: string): Promise<string | undefined> => {
   if (!url) return undefined;
   try {
     const [owner, repo] = getOwnerAndRepoFromUrl(url);
