@@ -1,6 +1,6 @@
 <script lang="ts">
+  import type { Entry, ShaType } from "$lib/types/types";
   import { scale } from "svelte/transition";
-  import type { Entry, ShaType } from "../../types";
   import ChangelogTab from "../changelog-tab.svelte";
   import CommitsTab from "../commits-tab.svelte";
   import ExpandableTabs from "../expandable-tabs.svelte";

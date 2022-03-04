@@ -1,5 +1,5 @@
+import type { Commit, CommitData } from "$lib/types/types";
 import { GITHUB_API_URL } from "../constants/github";
-import type { Commit, CommitData } from "../types";
 import { getTimeAgo } from "./time";
 import { convertUrlToRawUrl, getFilePathFromUrl, getOwnerAndRepoFromUrl } from "./url";
 

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import type { Entry } from "$lib/types/types";
+  import { ShaType } from "$lib/types/types";
   import Icon from "@iconify/svelte";
   import type { MappedSet } from "../helpers/type";
-  import type { Entry } from "../types";
-  import { ShaType } from "../types";
   import TabButton from "./tab-button.svelte";
   import UpdatesNotifier from "./updates-notifier.svelte";
 

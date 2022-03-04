@@ -1,6 +1,6 @@
 <script lang="ts">
+  import type { Commit } from "$lib/types/types";
   import { marked } from "marked";
-  import type { Commit } from "../types";
   import { getPullRequestUrlFromUrl } from "../utils/url";
 
   export let commit: Commit;
