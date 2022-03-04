@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-gray-800;
+}
+
 ::-webkit-scrollbar {
   @apply w-5 h-5;
 }

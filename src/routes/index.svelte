@@ -1,15 +1,15 @@
 <script lang="ts">
+  import AddChangelogButton from "$lib/add-changelog-button.svelte";
+  import ChangelogInput from "$lib/changelog-input.svelte";
+  import RepoTile from "$lib/repo-tile/repo-tile.svelte";
+  import TitleBar from "$lib/title-bar.svelte";
   import { onMount, tick } from "svelte";
   import { flip } from "svelte/animate";
   import { fade } from "svelte/transition";
-  import AddChangelogButton from "./lib/add-changelog-button.svelte";
-  import ChangelogInput from "./lib/changelog-input.svelte";
-  import RepoTile from "./lib/repo-tile/repo-tile.svelte";
-  import TitleBar from "./lib/title-bar.svelte";
-  import type { Entry, EntryInStorage } from "./types";
-  import { getStorableEntryValues } from "./utils/entry";
-  import { fetchLatestChangelogSha, fetchLatestCommitSha } from "./utils/fetch";
-  import { getOwnerAndRepoFromUrl, getPackageNameFromUrl } from "./utils/url";
+  import type { Entry, EntryInStorage } from "../types";
+  import { getStorableEntryValues } from "../utils/entry";
+  import { fetchLatestChangelogSha, fetchLatestCommitSha } from "../utils/fetch";
+  import { getOwnerAndRepoFromUrl, getPackageNameFromUrl } from "../utils/url";
 
   let values: Entry[] = [];
 
@@ -30,9 +30,7 @@
 
   $: {
     if (values.length !== 0) {
-      const storableValues: EntryInStorage[] = values.map((entry) =>
-        getStorableEntryValues(entry)
-      );
+      const storableValues: EntryInStorage[] = values.map((entry) => getStorableEntryValues(entry));
       localStorage.setItem("values", JSON.stringify(storableValues));
     }
   }
@@ -58,10 +56,7 @@
   };
 
   const addNewUrl = () =>
-    (values = [
-      ...values,
-      { url: "", id: Symbol(), lastViewedShas: {}, latestShas: {} },
-    ]);
+    (values = [...values, { url: "", id: Symbol(), lastViewedShas: {}, latestShas: {} }]);
 </script>
 
 <TitleBar />
