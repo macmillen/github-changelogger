@@ -3,9 +3,8 @@
 </script>
 
 {#if packageName}
-  <span
-    class="bg-blue-700 text-white border border-gray-400 px-1 rounded text-sm ml-2"
-  >
-    {packageName}
+  <span class="text-yellow-400 px-1 rounded text-sm ml-2 italic">
+    packages / <span class="underline font-black not-italic">{packageName}</span
+    >
   </span>
 {/if}
