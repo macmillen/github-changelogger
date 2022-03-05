@@ -27,11 +27,11 @@ export const fetchCommits = async (url: string): Promise<Commit[]> => {
   const json = (await response.json()) as CommitData[];
 
   return json.map((c) => ({
-    author: c.author.login,
+    author: c.author?.login ?? c.commit.author.name,
     date: getTimeAgo(new Date(c.commit.author.date)),
     message: c.commit.message,
     sha: c.sha,
-    avatarUrl: c.author.avatar_url,
+    avatarUrl: c.author?.avatar_url ?? c.committer.avatar_url,
   }));
 };
 
