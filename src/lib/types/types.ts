@@ -15,15 +15,19 @@ export type Entry = {
 
 export type CommitData = {
   sha: string;
-  author: {
+  author?: {
     avatar_url: string;
     login: string;
   };
   commit: {
     author: {
       date: string;
+      name: string;
     };
     message: string;
+  };
+  committer: {
+    avatar_url: string;
   };
 };
 
