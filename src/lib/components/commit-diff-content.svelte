@@ -5,5 +5,5 @@
 </script>
 
 <div class="diff-container">
-  {@html diffHtml(text)}
+  {@html diffHtml(text, { diffMaxChanges: 200, matching: "none" })}
 </div>
