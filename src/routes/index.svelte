@@ -3,6 +3,7 @@
   import ChangelogInput from "$lib/components/changelog-input.svelte";
   import RepoTile from "$lib/components/repo-tile/repo-tile.svelte";
   import TitleBar from "$lib/components/title-bar.svelte";
+  import { LocalStorageKey } from "$lib/constants/local-storage";
   import type { Entry, EntryInStorage } from "$lib/types/types";
   import { getStorableEntryValues } from "$lib/utils/entry";
   import { fetchLatestChangelogSha, fetchLatestCommitSha } from "$lib/utils/fetch";
@@ -14,7 +15,7 @@
   let values: Entry[] = [];
 
   onMount(() => {
-    const storageValue = localStorage.getItem("values");
+    const storageValue = localStorage.getItem(LocalStorageKey.Values);
     const parsedValue = JSON.parse(storageValue ?? "[]") as EntryInStorage[];
 
     values = parsedValue.map((entry) => ({
@@ -31,7 +32,7 @@
   $: {
     if (values.length !== 0) {
       const storableValues: EntryInStorage[] = values.map((entry) => getStorableEntryValues(entry));
-      localStorage.setItem("values", JSON.stringify(storableValues));
+      localStorage.setItem(LocalStorageKey.Values, JSON.stringify(storableValues));
     }
   }
 

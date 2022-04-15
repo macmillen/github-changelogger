@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { viewedCommitShas } from "$lib/stores/commit.store";
   import { fetchCommits, fetchDiff } from "../utils/fetch";
   import CommitDiffContent from "./commit-diff-content.svelte";
   import CommitItem from "./commit-item.svelte";
@@ -22,6 +23,7 @@
         on:click={() => {
           if (selectedCommitSha === commit.sha) selectedCommitSha = null;
           else selectedCommitSha = commit.sha;
+          viewedCommitShas?.add(commit.sha);
         }}
       />
       {#if commit.sha === selectedCommitSha}

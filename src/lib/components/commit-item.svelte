@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { viewedCommitShas } from "$lib/stores/commit.store";
   import type { Commit } from "$lib/types/types";
   import { marked } from "marked";
   import { getPullRequestUrlFromUrl } from "../utils/url";
@@ -22,7 +23,7 @@
 
 <div
   class="bg-gray-900 text-gray-100 cursor-pointer rounded-md p-1 space-y-1
-    {selected ? 'ring' : ''}"
+    {selected ? 'ring' : ''} {$viewedCommitShas?.[commit.sha] ? '' : 'ring-1 ring-yellow-500/40'}"
   on:click
 >
   <div class="flex justify-between mx-1">
@@ -41,7 +42,7 @@
         {@html marked.parse(replacePrHashesWithLinks(commit.message))}
       </div>
     {:else}
-      <p class="whitespace-nowrap overflow-ellipsis overflow-hidden">
+      <p class="truncate">
         {commit.message}
       </p>
     {/if}
