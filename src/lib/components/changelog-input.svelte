@@ -6,6 +6,6 @@
   class="w-full text-xs hover:bg-gray-600 transition text-white rounded-md border-gray-700 bg-transparent"
   placeholder="Add Github Repo URL or Changelog File URL"
   type="text"
-  bind:value
+  {value}
   on:input
 />

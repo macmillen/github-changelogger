@@ -4,16 +4,13 @@ import { writable } from "svelte/store";
 
 type ViewedCommitShasMap = Record<string, "1">;
 
-const getViewedCommitShasFromLocalStorage = (): ViewedCommitShasMap => {
-  const value = localStorage.getItem(LocalStorageKey.ViewedCommitShas);
-  return JSON.parse(value ?? "{}");
-};
-
 const createViewedCommitShas = () => {
   if (!browser) return undefined;
-  const { subscribe, update } = writable<ViewedCommitShasMap>(
-    getViewedCommitShasFromLocalStorage()
-  );
+
+  const value = localStorage.getItem(LocalStorageKey.ViewedCommitShas);
+  const viewedCommitShas = JSON.parse(value ?? "{}") as ViewedCommitShasMap;
+
+  const { subscribe, update } = writable(viewedCommitShas);
 
   return {
     subscribe,

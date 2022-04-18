@@ -1,6 +1,6 @@
 import type { Entry, EntryInStorage } from "$lib/types/types";
 
-export const getStorableEntryValues = ({
+export const getStorableEntryFields = ({
   url,
   lastViewedShas,
 }: Entry | EntryInStorage): EntryInStorage => ({
