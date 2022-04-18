@@ -1,6 +1,7 @@
 <script lang="ts">
   import AddChangelogButton from "$lib/components/add-changelog-button.svelte";
   import ChangelogInput from "$lib/components/changelog-input.svelte";
+  import Loader from "$lib/components/loader.svelte";
   import RepoTile from "$lib/components/repo-tile/repo-tile.svelte";
   import TitleBar from "$lib/components/title-bar.svelte";
   import { entryStore } from "$lib/stores/entry.store";
@@ -42,6 +43,10 @@
           value={entry.url}
         />
       </RepoTile>
+    </div>
+  {:else}
+    <div class="flex justify-center">
+      <Loader />
     </div>
   {/each}
 </div>
