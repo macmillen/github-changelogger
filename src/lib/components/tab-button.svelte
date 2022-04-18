@@ -1,11 +1,16 @@
 <script lang="ts">
+  import { scale } from "svelte/transition";
+
   export let selected: boolean;
 </script>
 
 <button
-  class="flex gap-2 justify-center transition items-center text-sm text-white px-2 py-2 rounded-md border-2 border-yellow-600 w-full
-  {selected ? 'text-gray-800 bg-yellow-400 font-bold border-none' : ''}"
+  class="relative flex gap-2 justify-center transition items-center text-sm text-white px-2 py-3 rounded-md border border-gray-700 w-full
+    {selected ? 'text-yellow-500' : ''}"
   on:click
 >
   <slot />
+  {#if selected}
+    <div class="w-full h-px bg-yellow-700 absolute bottom-0" transition:scale={{}} />
+  {/if}
 </button>
