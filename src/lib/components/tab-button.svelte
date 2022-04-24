@@ -11,6 +11,9 @@
 >
   <slot />
   {#if selected}
-    <div class="w-full h-px bg-yellow-700 absolute bottom-0" transition:scale={{}} />
+    <div
+      class="w-[calc(100%-30px)] rounded h-1 bg-yellow-600 absolute -bottom-px"
+      transition:scale={{}}
+    />
   {/if}
 </button>

@@ -23,7 +23,7 @@
 
 <div
   class="bg-gray-900 text-gray-100 cursor-pointer rounded-md p-1 space-y-1
-    {selected ? 'ring' : ''} {$viewedCommitShas?.[commit.sha] ? '' : 'ring-1 ring-yellow-500/40'}"
+    {selected ? 'ring' : ''} {$viewedCommitShas?.[commit.sha] ? '' : 'ring-1 ring-yellow-600'}"
   on:click
 >
   <div class="flex justify-between mx-1">
