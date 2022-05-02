@@ -1,40 +1,12 @@
-# create-svelte
+# GitHub ChangeLogger
+GitHub ChangeLogger is a tool to track changes across public code repositories hosted on github.com. It only uses the public GitHub API and requires no authentication. The app works without any outbound network traffic and all data is stored inside the local storage.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## The app
+You can access the App under this URL: https://github-changelogger.vercel.app.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## How it works
+1. First create a new entry
+2. Add a repo URL or changelog URL to the list
+<img src="https://user-images.githubusercontent.com/33156526/166292725-0e981a2a-aabc-471d-a064-60186015f6c5.png" width="400">
+3. Now you can check out recent commit changes
+<img src="https://user-images.githubusercontent.com/33156526/166293444-4ad3a08d-0f0c-467f-9f3a-49b77b11ac4e.png" width="400"> 
