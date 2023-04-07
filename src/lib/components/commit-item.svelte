@@ -21,7 +21,7 @@
   };
 </script>
 
-<div
+<button
   class="bg-gray-900 text-gray-100 cursor-pointer rounded-md p-1 space-y-1
     {selected ? 'ring' : ''} {$viewedCommitShas?.[commit.sha] ? '' : 'ring-1 ring-yellow-600'}"
   on:click
@@ -47,4 +47,4 @@
       </p>
     {/if}
   </div>
-</div>
+</button>

@@ -38,6 +38,7 @@
       >
         <ChangelogInput
           on:input={async (e) => {
+            await tick();
             entryStore?.updateUrl(entry, getInputEventValue(e));
           }}
           value={entry.url}
