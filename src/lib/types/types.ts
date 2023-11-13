@@ -26,7 +26,7 @@ export type CommitData = {
     };
     message: string;
   };
-  committer: {
+  committer?: {
     avatar_url: string;
   };
 };

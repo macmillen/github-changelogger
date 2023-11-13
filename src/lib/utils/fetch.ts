@@ -31,7 +31,7 @@ export const fetchCommits = async (url: string): Promise<Commit[]> => {
     date: getTimeAgo(new Date(c.commit.author.date)),
     message: c.commit.message,
     sha: c.sha,
-    avatarUrl: c.author?.avatar_url ?? c.committer.avatar_url,
+    avatarUrl: c.author?.avatar_url ?? c.committer?.avatar_url ?? "",
   }));
 };
 
